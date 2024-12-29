@@ -1,0 +1,236 @@
+<html>
+  <head><base href="." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocusFlow - Streamlined Task Management</title>
+    <link rel="shortcut icon" href="reminder.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+    :root {
+      --primary: #4a90e2;
+      --success: #2ecc71;
+      --danger: #e74c3c;
+      --gray: #95a5a6;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    body {
+      background: #f5f6fa;
+      padding: 2rem;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    
+    .task-form {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+    }
+    
+    .input-group {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    input, select {
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+    
+    input[type="text"] {
+      flex: 1;
+    }
+    
+    button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+    }
+    
+    .task-list {
+      display: grid;
+      gap: 1rem;
+    }
+    
+    .task-card {
+      background: white;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      animation: slideIn 0.3s ease-out;
+    }
+    
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    .task-info {
+      flex: 1;
+    }
+    
+    .task-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .task-meta {
+      display: flex;
+      gap: 1rem;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+    
+    .priority {
+      padding: 0.2rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+    }
+    
+    .priority.high {
+      background: #ffe0e0;
+      color: var(--danger);
+    }
+    
+    .priority.medium {
+      background: #fff3e0;
+      color: #f39c12;
+    }
+    
+    .priority.low {
+      background: #e0ffe0;
+      color: var(--success);
+    }
+    
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .complete-btn {
+      background: var(--success);
+    }
+    
+    .delete-btn {
+      background: var(--danger);
+    }
+    
+    .filters {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .reminder-input {
+      margin-top: 1rem;
+    }
+    
+    .alarm-notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--primary);
+      color: white;
+      padding: 1rem;
+      border-radius: 8px;
+      display: none;
+      animation: slideUp 0.3s ease-out;
+    }
+    
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+    </style>
+    </head>
+    <body>
+    <div class="container">
+      <div class="header">
+        <h1>FocusFlow</h1>
+        <div id="task-stats"></div>
+      </div>
+    
+      <div class="task-form">
+        <div class="input-group">
+          <input type="text" id="task-input" placeholder="Enter task description">
+          <select id="priority-select">
+            <option value="low">Low Priority</option>
+            <option value="medium">Medium Priority</option>
+            <option value="high">High Priority</option>
+          </select>
+          <button onclick="addTask()">Add Task</button>
+        </div>
+        <div class="reminder-input">
+          <input type="datetime-local" id="reminder-time">
+        </div>
+      </div>
+    
+      <div class="filters">
+        <select id="filter-priority" onchange="filterTasks()">
+          <option value="all">All Priorities</option>
+          <option value="high">High Priority</option>
+          <option value="medium">Medium Priority</option>
+          <option value="low">Low Priority</option>
+        </select>
+        <select id="filter-status" onchange="filterTasks()">
+          <option value="all">All Status</option>
+          <option value="pending">Pending</option>
+          <option value="completed">Completed</option>
+        </select>
+      </div>
+    
+      <div id="task-list" class="task-list">
+        <!-- Tasks will be inserted here -->
+      </div>
+    </div>
+    
+    <div id="alarm-notification" class="alarm-notification">
+      <div id="alarm-message"></div>
+    </div>
+    
+    <script src="script.js"></script>
+     </body>
+    </html>
